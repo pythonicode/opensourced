@@ -50,8 +50,8 @@ export default function Develop() {
         <Fade triggerOnce>
             <MediaQuery smallerThan='sm' styles={{ flexDirection: 'column' }}>
             <Group sx={ {minHeight: '100vh', width: '100vw', overflow: 'hidden'}} grow>
-                <Stack align="center" justify='center' spacing={64} p="xl" sx={(theme) => ({backgroundColor: theme.colors.indigo[5], height: '100vh', maxWidth: '100vw'})}>
-                    <Image src="images/freelancer.svg" alt="Freelancer writing code on his laptop." sx={{ maxWidth: '75%', width: '20vw'}}/>
+                <Stack align="center" justify='center' spacing={64} p="xl" sx={(theme) => ({backgroundColor: theme.colors.indigo[5], minHeight: '100vh', maxWidth: '100vw'})}>
+                    <Image src="images/freelancer.svg" alt="Freelancer writing code on his laptop." sx={{ maxWidth: '50%', width: '50vw'}}/>
                     <Title align="center" sx={{maxWidth: '32ch'}}>Earn Cryptocurrency for Contributing to Open Source Projects</Title>
                     <Timeline active={3} bulletSize={24} lineWidth={2} sx={{backgroundColor: '#fff', padding: '2rem', borderRadius: '1rem' }}>
                         <Timeline.Item bullet={<FaGithub />} title="Login with Github" pb="xl">
@@ -71,7 +71,7 @@ export default function Develop() {
                     <Button size="xl" color="dark" leftIcon={<FaGithub />} onClick={signInWithGithub}>
                         Sign in with Github
                     </Button>
-                    <Text size="xs" color="dimmed">Before signing in we recommend reading the <Text variant="link" component='a' href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" inherit>Terms of Service</Text></Text>
+                    <Text size="xs" color="dimmed" align="center">Before signing in we recommend reading the <Text variant="link" component='a' href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" inherit>Terms of Service</Text></Text>
                 </Stack>
             </Group>
             </MediaQuery>
