@@ -34,7 +34,7 @@ export default function Develop() {
             try {
                 await setDoc(doc(db, 'users', user.uid), {
                     token: token,
-                })
+                }, {merge: true})
                 router.replace('/dashboard')
             } catch (error: any) {
                 showNotification({title: "There was a problem signing in", message: error.message})
