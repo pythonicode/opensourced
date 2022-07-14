@@ -65,9 +65,6 @@ export default function Dashboard() {
                     <Grid.Col md={4}>
                         <GitHub token={data.token} />
                     </Grid.Col>
-                    <Grid.Col md={4}>
-                        <GitHub token={data.token} />
-                    </Grid.Col>
                 </Grid>
             </Layout>
         </Fade>

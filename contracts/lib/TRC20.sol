@@ -84,7 +84,7 @@ contract TRC20 is ITRC20, Context {
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
     function decimals() public view virtual override returns (uint8) {
-        return 9;
+        return 6;
     }
 
     /**
