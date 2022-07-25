@@ -1,24 +1,37 @@
-import { Button, Card, Text, Stack, Title, Group, TextInput, Badge } from '@mantine/core';
+import { Button, Card, Text, Stack, Title, Group, TextInput, Badge, Loader } from '@mantine/core';
 import { Fade } from 'react-awesome-reveal';
 import { Image } from '@mantine/core';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import { getSmartContract } from '@/lib/tron';
+import { formatBalance, getSmartContract } from '@/lib/tron';
 import { MdMoney } from 'react-icons/md';
 import { TokensIcon } from '@modulz/radix-icons';
 
 export default function Contribute() {
-  const [address, setAddress] = useState(null);
+  const [account, setAccount] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [staked, setStaked] = useState<string | null>(null);
 
   useEffect(() => {
     if (!window.tronWeb) return;
-    window.tronWeb.isConnected().then(() => {
-      setAddress(window.tronWeb.defaultAddress.hex);
-      getSmartContract('TKWJdrQkqHisa1X8HUdHEfREvTzw4pMAaY').then((contract) => {
-        console.log(contract);
-      });
-    });
-  });
+    window.tronWeb
+      .isConnected()
+      .then(() => {
+        setAccount(window.tronWeb.defaultAddress.base58);
+        window.tronWeb.trx
+          .getBalance(window.tronWeb.defaultAddress.base58)
+          .then((balance: any) => {
+            setBalance(balance);
+          })
+          .catch((err: any) => console.error(err));
+        getSmartContract('TKWJdrQkqHisa1X8HUdHEfREvTzw4pMAaY')
+          .then((contract) => {
+            console.log(contract);
+          })
+          .catch((err: any) => console.error(err));
+      })
+      .catch((err: any) => console.error(err));
+  }, []);
 
   return (
     <Fade triggerOnce>
@@ -26,6 +39,7 @@ export default function Contribute() {
         justify="center"
         align="center"
         sx={{ minHeight: '100vh', width: '100vw', overflowX: 'hidden' }}
+        spacing="xl"
       >
         <Image
           src="/images/vault.svg"
@@ -33,7 +47,7 @@ export default function Contribute() {
           sx={{ width: 'clamp(200px, 50vw, 500px)' }}
         />
         <Title align="center">Stake your TRX to support Opensource</Title>
-        {address ? (
+        {account ? (
           <Stack justify="center" align="center" m="xl" sx={{ maxWidth: '512px', width: '90%' }}>
             <Group grow sx={{ width: '100%' }}>
               <Group
@@ -61,18 +75,25 @@ export default function Contribute() {
                 }}
               >
                 <Badge>BALANCE</Badge>
-                <Text>0</Text>
+                {balance ? <Text>{formatBalance(balance)}</Text> : <Loader size="xs" />}
                 <Text>TRX</Text>
               </Group>
             </Group>
-            <TextInput icon={<FaWallet />} value={address} sx={{ width: '100%' }} disabled />
+            <TextInput icon={<FaWallet />} value={account} sx={{ width: '100%' }} disabled />
             <TextInput icon={<FaCoins />} placeholder="Amount to stake" sx={{ width: '100%' }} />
             <Button fullWidth>Stake TRX</Button>
             <Button color="red" fullWidth>
               Unstake TRX
             </Button>
           </Stack>
-        ) : null}
+        ) : (
+          <>
+            <Text variant="link" component="a" href="https://www.tronlink.org/">
+              Before continuing, please install TronLink here.
+            </Text>
+            <Text size="xs">or if TronLink is already installed. Try logging in.</Text>
+          </>
+        )}
       </Stack>
     </Fade>
   );
