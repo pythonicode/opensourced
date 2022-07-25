@@ -8,6 +8,7 @@
 /// <reference types="node" />
 declare module 'tronweb' {
   export class TronWeb {
+    transactionBuilder: any;
     constructor(e: any, ...args: any[]);
     contract(...args: any[]): any;
     currentProvider(): any;
